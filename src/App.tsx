@@ -12,7 +12,9 @@ interface ClientToServerEvents {
 
 // Create socket with proper typing
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
-  io('https://maddison-unupbraided-abram.ngrok-free.dev');
+  io('https://maddison-unupbraided-abram.ngrok-free.dev', {
+    transports: ['websocket']
+  });
 
 const App: React.FC = () => {
   const [count, setCount] = useState<number>(0);
