@@ -16,7 +16,8 @@ export default defineConfig({
       '.ngrok-free.dev',
     ],
     headers: {
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:;"
+      // ATENÇÃO: Reduz a segurança contra ataques XSS
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:;"
     }
   },
   build: {
