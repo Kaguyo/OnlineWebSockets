@@ -1,0 +1,84 @@
+.main-menu {
+  margin-top: 350px;
+  width: 400px;
+  height: fit-content;
+  padding: 15px;
+  background-color: #333;
+  border-radius: 8px;
+}
+
+.menu-item {
+  font-family: 'Franklin Gothic Medium';
+  padding: 10px 15px;
+  margin: 5px 0;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.1em;
+  color: #fff;
+  transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #555;
+}
+
+#menu-list {
+    padding-left: 0;
+    font-size: 24px;
+}
+
+.active-players-menu {
+    margin-top: 100px;
+    opacity: 0.6;
+    border-radius: 12px;
+    width: 800px;
+    height: 700px;
+    background-color:black;
+    display: flex;
+    flex-direction: column;
+}
+
+.apm-header {
+    font-family: Arial;
+    display: grid;
+    grid-template-columns:repeat(4,1fr);
+    height: 45px;
+    width: 100%;
+    background-color:#555;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    align-items: center;
+    color: white;
+    justify-items: center;
+}
+
+.apm-col {
+    position: relative;
+    flex: 1;
+    color: white;
+    border-bottom: 1px solid #444;
+    text-align: left;
+
+    max-height:45px;
+    background-color:#252525;
+}
+
+.apm-body {
+  flex: 1;            /* ocupa o resto do espaço da div principal */
+  overflow-y: auto;   /* rolagem vertical somente aqui */
+}
+
+.apm-row {
+  display: flex;
+}
+
+.apm-row .apm-col {
+  flex: 1;
+  padding: 8px;
+  color: white;
+  border-bottom: 1px solid #333;
+}
+
+ul.no-dots {
+  list-style-type: none;
+}

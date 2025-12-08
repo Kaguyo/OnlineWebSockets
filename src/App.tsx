@@ -1,43 +1,86 @@
-// src/App.tsx
-import React, { useState, useEffect } from 'react';
-import { io, Socket } from 'socket.io-client';
+import React, { useState } from 'react';
 
-interface ServerToClientEvents {
-  count: (newCount: number) => void;
-}
+import LoadingScreen from './components/LoadingScreen';
+import MainMenu from './components/MainMenu';
+import CombatArena from './components/CombatArena';
+import GameOverScreen from './components/GameOverScreen';
+import {playerCount, socket} from './api/Socket';
 
-interface ClientToServerEvents {
-  increment: () => void;
-}
 
-// Create socket with proper typing
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
-  io('https://maddison-unupbraided-abram.ngrok-free.dev', {
-    transports: ['websocket']
-  });
-
+type GamePhase = 'LOADING' | 'FRIEND_LIST' | 'FINDING_PLAYERS' | 'MAIN_MENU' | 'COMBAT' | 'GAME_OVER' | 'ONLINE_OPTIONS';
 const App: React.FC = () => {
-  const [count, setCount] = useState<number>(0);
+  const [currentPhase, setCurrentPhase] = useState<GamePhase>('LOADING');
 
-  useEffect(() => {
-    socket.on('count', (newCount: number) => {
-      setCount(newCount);
-    });
+  useState(() => {
+    const timer = setTimeout(() => {
+      setCurrentPhase('MAIN_MENU');
+    }, 1000);
+    return () => clearTimeout(timer);
+  });
 
-    return () => {
-      socket.off('count');
-    };
-  }, []);
+  // Leitor de Estado Atual do Jogo
+  const renderCurrentScreen = () => {
+    switch (currentPhase) {
+      case 'LOADING':
+        return <LoadingScreen />;
+        
+      case 'MAIN_MENU':
+        return (
+          <MainMenu 
+            onArcadeMode={() => setCurrentPhase('COMBAT')}
+            onConnectOnline={() => {setCurrentPhase('ONLINE_OPTIONS'), socket.connect()}}
+          />
+        );
 
-  const handleClick = () => {
-    socket.emit('increment');
+      case 'ONLINE_OPTIONS':
+        return (
+          <MainMenu 
+            onlineSection={true}
+            onFindPlayers={() => setCurrentPhase('FINDING_PLAYERS')}
+            onFindRoom={() => setCurrentPhase('FINDING_PLAYERS')}
+            onFriendList={() => setCurrentPhase('FRIEND_LIST')}
+          />
+        );
+
+      case 'FINDING_PLAYERS':
+        return (
+          <MainMenu 
+            onlineSection={true}
+            findingPlayers={true}
+            playerCount={playerCount}
+          />
+        );
+      
+      case 'FRIEND_LIST':
+        return (
+          <MainMenu
+            onlineSection={true}
+            friendList={true}
+          />
+        )
+      case 'COMBAT':
+        return (
+          <CombatArena 
+            onGameOver={() => setCurrentPhase('GAME_OVER')} 
+          />
+        );
+        
+      case 'GAME_OVER':
+        return (
+          <GameOverScreen 
+            onRestart={() => setCurrentPhase('MAIN_MENU')} 
+          />
+        );
+        
+      default:
+        return <div>An unknown error occurred.</div>;
+    }
   };
 
+  // Render baseado em Estado Atual do Jogo
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Shared Counter</h1>
-      <p>Count: {count}</p>
-      <button onClick={handleClick}>Increment</button>
+    <div className="game-screen">
+      {renderCurrentScreen()}
     </div>
   );
 };

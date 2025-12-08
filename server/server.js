@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -12,23 +11,29 @@ const io = new Server(server, {
   cors: { origin: '*' }
 });
 
-let count = 0;
+let connectedPlayers = [];
+let countConnectedPlayers = connectedPlayers.length;
+
 
 io.on('connection', (socket) => {
-  console.log('a user connected:', socket.id);
-  // send current count when a new client connects
-  socket.emit('count', count);
-
-  socket.on('increment', () => {
-    count += 1;
-    // broadcast new count to all connected clients
-    io.emit('count', count);
-  });
+  console.log('New user connected:', socket.id, "\n");
+  connectedPlayers.push(socket.id);
+  countConnectedPlayers = connectedPlayers.length;
+  console.log("Current Users:", connectedPlayers);
+  console.log("Connected Players:", countConnectedPlayers);
+  io.emit('globalCountPlayers', countConnectedPlayers);
 
   socket.on('disconnect', () => {
-    console.log('user disconnected', socket.id);
+    console.log("User "+ socket.id +" disconnected.")
+    connectedPlayers = connectedPlayers.filter(sId => sId !== socket.id);
+    countConnectedPlayers = connectedPlayers.length;
+    console.log("Current Users: ", connectedPlayers);
+    console.log("Connected Players:", countConnectedPlayers);
+    io.emit('globalCountPlayers', countConnectedPlayers);
   });
 });
+
+
 
 const PORT = 4000;
 server.listen(PORT, () => {

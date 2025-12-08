@@ -341,9 +341,9 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 2822.8908101213297,
-			"y": -816.674038507836,
-			"lastActivityTimestamp": 1765068968625,
+			"x": 2881.9352123983113,
+			"y": -2207.334437091541,
+			"lastActivityTimestamp": 1765079938449,
 			"meta": {}
 		},
 		{
@@ -15878,9 +15878,9 @@
 			"typeName": "shape"
 		},
 		{
-			"x": 2972.693154232142,
-			"y": 1890.8062992645637,
-			"z": 0.249707377572888,
+			"x": 3562.4522523050377,
+			"y": 2582.13138555079,
+			"z": 0.15213238337760202,
 			"meta": {},
 			"id": "camera:page:page",
 			"typeName": "camera"
@@ -33426,7 +33426,31 @@
 			"editingShapeId": null,
 			"croppingShapeId": null,
 			"selectedShapeIds": [
-				"shape:QB_nCrrIoqVb-sV4M2GnS"
+				"shape:vmTqvMWcPxfI_fP0tds27",
+				"shape:Js597PBuU9XbYFNH6kVMX",
+				"shape:1wBKNwN-iB10dxmMb2gZQ",
+				"shape:81Dobyb1amoSwBtDPwMfa",
+				"shape:7roPTUFbCBkjb2st8qbD5",
+				"shape:kJ-MdXXPfXJrfIC_mL6vA",
+				"shape:wjst0NFn7cegRnE5GyGkb",
+				"shape:9VnZTux13Comhxm70xhkE",
+				"shape:fQvitYgX4vmvGpdt3RqfM",
+				"shape:Q4AcVXwJErXChNBIRK0Ua",
+				"shape:RfOXgSMLbefEy1m9j2a2U",
+				"shape:Sn5JdVWRy3st2HZPr94y2",
+				"shape:BKV5VqKcnU8zyHpiENX_b",
+				"shape:2olEO8ltcC3FnlfgojWM0",
+				"shape:0ZomvWSKA04d6Bv3AbBDa",
+				"shape:VHxgh1HoZSxVT9hMF007C",
+				"shape:FPzwja9n9XUT5v9auVBaV",
+				"shape:c1rV9l1kRJ-t3jyVIYLUC",
+				"shape:bXyOvhG88TGre3gtYcczX",
+				"shape:Cok7YUFN7cQuUmqibrm1-",
+				"shape:uuS3rpT-1tOtqidTk3t3B",
+				"shape:XC_BTWClCcp1yutY5tLGx",
+				"shape:pcoXAVHrnf53gFpLfR20w",
+				"shape:UD0uiRvNowt5VXj6Al-Aa",
+				"shape:mNEFnrJpxF1_lCnFdSLQU"
 			],
 			"hoveredShapeId": null,
 			"erasingShapeIds": [],
@@ -81247,10 +81271,7 @@
 		{
 			"followingUserId": null,
 			"opacityForNextShape": 1,
-			"stylesForNextShape": {
-				"tldraw:geo": "rectangle",
-				"tldraw:color": "black"
-			},
+			"stylesForNextShape": {},
 			"brush": null,
 			"scribbles": [],
 			"cursor": {
@@ -81264,7 +81285,7 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 1968.0001220703125,
+				"w": 984.0000610351562,
 				"h": 1117.2000732421875
 			},
 			"insets": [
@@ -81282,7 +81303,7 @@
 			"isFocused": true,
 			"devicePixelRatio": 0.8333333134651184,
 			"isCoarsePointer": false,
-			"isHoveringCanvas": true,
+			"isHoveringCanvas": false,
 			"openMenus": [],
 			"isChangingStyle": false,
 			"isReadonly": false,
