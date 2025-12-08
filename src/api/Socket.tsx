@@ -20,7 +20,6 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
 
   socket.on('active_players_count', (x) => {
     playerCount = x;
-    window.alert("CONNECTED PLAYERS: "+playerCount)
   });
 
 
