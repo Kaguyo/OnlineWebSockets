@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
   countConnectedPlayers = connectedPlayers.length;
   console.log("Current Users:", connectedPlayers);
   console.log("Connected Players:", countConnectedPlayers);
-  io.emit('globalCountPlayers', countConnectedPlayers);
+  io.emit('active_players_count', countConnectedPlayers);
 
   socket.on('disconnect', () => {
     console.log("User "+ socket.id +" disconnected.")
@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     countConnectedPlayers = connectedPlayers.length;
     console.log("Current Users: ", connectedPlayers);
     console.log("Connected Players:", countConnectedPlayers);
-    io.emit('globalCountPlayers', countConnectedPlayers);
+    io.emit('active_players_count', countConnectedPlayers);
   });
 });
 

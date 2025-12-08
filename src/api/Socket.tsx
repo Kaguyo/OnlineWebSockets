@@ -1,11 +1,11 @@
 import { io, Socket } from 'socket.io-client';
 
 interface ServerToClientEvents {
-  globalCountPlayers: (newCount: number) => void;
+  active_players_count: (newCount: number) => void;
 }
 
 interface ClientToServerEvents {
-  increment: () => void;
+
 }
 
 const url = 'https://maddison-unupbraided-abram.ngrok-free.dev'
@@ -18,7 +18,7 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   });  
 
 
-  socket.on('globalCountPlayers', (x) => {
+  socket.on('active_players_count', (x) => {
     playerCount = x;
     window.alert("CONNECTED PLAYERS: "+playerCount)
   });

@@ -1,5 +1,5 @@
 // src/components/MainMenu.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import './MainMenu.css'
 
 interface MainMenuProps {
@@ -31,11 +31,11 @@ const MainMenu: React.FC<MainMenuProps> = ({
   onCreateRoom,     createRoom,   onFindPlayers,   findingPlayers,
   onFindRoom,       findingRoom,  onFriendList,    friendList,
   onPlayerVsPlayer, pvpMode,      onCoopMode,      coopMode,
-  onPlayerVsCpu,    vsCpu,      onMyAccount,      myAccount, playerCount
+  onPlayerVsCpu,    vsCpu,      onMyAccount,       myAccount,
+  playerCount
 }) => {
-  const count = playerCount && playerCount > 0 ? playerCount : 0;
   
-  const playerDivs = Array(count).fill(0).map((_, index) => (
+  const playerDivs = Array(playerCount).fill(0).map((_, index) => (
     <div 
       key={index}
       className="apm-col"

@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import LoadingScreen from './components/LoadingScreen';
 import MainMenu from './components/MainMenu';
 import CombatArena from './components/CombatArena';
 import GameOverScreen from './components/GameOverScreen';
-import {playerCount, socket} from './api/Socket';
+import { socket } from './api/Socket';
 
 
 type GamePhase = 'LOADING' | 'FRIEND_LIST' | 'FINDING_PLAYERS' | 'MAIN_MENU' | 'COMBAT' | 'GAME_OVER' | 'ONLINE_OPTIONS';
 const App: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState<GamePhase>('LOADING');
+  
+  const [activePlayerCount, setActivePlayerCount] = useState<number>(0);
+  
+  useEffect(() => {
+    const handlePlayerUpdate = (count: number) => {
+      setActivePlayerCount(count); 
+      console.log(count);
+    };
+    socket.on('active_players_count', handlePlayerUpdate); 
+
+    return () => {
+      socket.off('active_players_count', handlePlayerUpdate);
+    };
+    
+  }, []);
 
   useState(() => {
     const timer = setTimeout(() => {
@@ -47,7 +62,7 @@ const App: React.FC = () => {
           <MainMenu 
             onlineSection={true}
             findingPlayers={true}
-            playerCount={playerCount}
+            playerCount={activePlayerCount}
           />
         );
       
