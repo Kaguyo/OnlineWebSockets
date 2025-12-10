@@ -1,0 +1,19 @@
+{
+    "nickname":"Kaguyo",
+    
+    "level": 76,
+    
+    "status": "Offline",
+    
+    "id":"10000000",
+    
+    "friends": [
+
+    ],
+    "friendRequests": [
+        { 
+            "playerId":"10000001",
+            "playerNickname":""
+        }
+    ]
+}

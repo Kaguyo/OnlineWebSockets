@@ -18,10 +18,10 @@ const App: React.FC = () => {
       setActivePlayerCount(count); 
       console.log(count);
     };
-    socket.on('active_players_count', handlePlayerUpdate); 
+    socket.on('svr_active_players_count', handlePlayerUpdate); 
 
     return () => {
-      socket.off('active_players_count', handlePlayerUpdate);
+      socket.off('svr_active_players_count', handlePlayerUpdate);
     };
     
   }, []);

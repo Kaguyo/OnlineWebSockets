@@ -61,7 +61,6 @@ const MainMenu: React.FC<MainMenuProps> = ({
     <div className="active-players-menu">
       <div className="apm-header">
           <h3>Nickname</h3>
-          <h3>Description</h3>
           <h3>Status</h3>
           <h3>Level</h3>
       </div>

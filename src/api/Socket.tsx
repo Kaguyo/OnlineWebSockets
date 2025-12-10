@@ -1,15 +1,32 @@
 import { io, Socket } from 'socket.io-client';
+import { SendPublicInfo }  from './dto/SendPublicInfo'
+import Players from './online/Players'
+
+interface Player {
+  id: string;
+  socketId: string;
+  nickname: string;
+  level: number;
+  status: string;
+}
 
 interface ServerToClientEvents {
-  active_players_count: (newCount: number) => void;
+  srv_distribute_connections: (connectedPlayers: Player[]) => void;
+  svr_active_players_count: (playerCount: number) => void;
 }
 
 interface ClientToServerEvents {
-
+  send_public_connection: (userData: SendPublicInfo) => void;
+  send_friend_request: (object: JSON) => void;
+  respond_friend_request: (choice: boolean) => void;
+  send_message: (object: JSON) => void;
+  invite_to_room: (object: JSON) => void;
+  respond_room_invite: (choice: boolean) => void;
+  create_room: (object: JSON) => void;
+  disconnect_from_room: (object: JSON) => void;
 }
 
 const url = 'https://maddison-unupbraided-abram.ngrok-free.dev'
-export let playerCount = 0;
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   io(url, {
@@ -17,14 +34,13 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
     autoConnect: false
   });  
 
-
-  socket.on('active_players_count', (x) => {
-    playerCount = x;
+  socket.on('srv_distribute_connections', (connectedPlayers) => {
+    Players.connectedPlayers = connectedPlayers;
+    Players.connectedPlayers.forEach((p) => console.log(p))
   });
 
-
   socket.on('connect', () => {
-    window.alert("CONEXÃO ESTABELECIDA")
+    socket.emit('send_public_connection', new SendPublicInfo())
   });
 
 
