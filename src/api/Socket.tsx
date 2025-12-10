@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
-import { SendPublicInfo }  from './dto/SendPublicInfo'
-import Players from './online/Players'
+import UserData from './user/UserData';
+import Players from './online/Players';
 
 interface Player {
   id: string;
@@ -16,7 +16,7 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
-  send_public_connection: (userData: SendPublicInfo) => void;
+  send_public_connection: (userData: {}) => void;
   send_friend_request: (object: JSON) => void;
   respond_friend_request: (choice: boolean) => void;
   send_message: (object: JSON) => void;
@@ -27,7 +27,7 @@ interface ClientToServerEvents {
 }
 
 const url = 'https://maddison-unupbraided-abram.ngrok-free.dev'
-
+let user: UserData;
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   io(url, {
     transports: ['websocket'],
@@ -40,7 +40,13 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   });
 
   socket.on('connect', () => {
-    socket.emit('send_public_connection', new SendPublicInfo())
+    user = new UserData();
+    user.status = "Online";
+    socket.emit('send_public_connection', user.SendPublicInfo());
+  });
+
+  socket.on('disconnect', () => {
+    //
   });
 
 

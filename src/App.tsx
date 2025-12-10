@@ -13,6 +13,12 @@ const App: React.FC = () => {
   
   const [activePlayerCount, setActivePlayerCount] = useState<number>(0);
   
+  // useEffect(() => {
+  //   const handleUserDataUpdate = (userData: { nickname: string, status: string, level: number}) => {
+
+  //   };
+  // });
+  
   useEffect(() => {
     const handlePlayerUpdate = (count: number) => {
       setActivePlayerCount(count); 

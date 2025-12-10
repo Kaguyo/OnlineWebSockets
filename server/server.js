@@ -49,8 +49,8 @@ io.on('connection', (socket) => {
     const player = new Player(userData.id, socket.id, userData.nickname, userData.level, userData.status);
     connectedPlayers.push(player);
 
-    io.emit(ServerToClientEvents.svr_active_players_count, connectedPlayers.length);
     io.emit(ServerToClientEvents.srv_distribute_connections, connectedPlayers);
+    io.emit(ServerToClientEvents.svr_active_players_count, connectedPlayers.length);
   });
 
   socket.on('disconnect', () => {
