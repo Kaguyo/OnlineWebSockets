@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
     });
     
     io.emit(ServerToClientEvents.srv_distribute_connections, connectedPlayers);
+    io.emit(ServerToClientEvents.svr_active_players_count, connectedPlayers.length)
   });
 });
 
