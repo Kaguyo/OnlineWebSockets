@@ -1,16 +1,18 @@
 import userconfig from "../../user.json"
 
-export default class UserData {
+export default class PlayerUser {
     id: string;
     nickname: string;
     level: number;
     status: string;
+    socketId: string;
 
-    constructor(){
+    constructor(socketId: string){
         this.id = userconfig.id;
         this.nickname = userconfig.nickname;
         this.level = userconfig.level;
         this.status = userconfig.status;
+        this.socketId = socketId;
     }
 
     SendPublicInfo(){

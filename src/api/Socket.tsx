@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import UserData from './user/UserData';
+import PlayerUser from './user/PlayerUser';
 import Players from './online/Players';
 
 interface Player {
@@ -11,12 +11,13 @@ interface Player {
 }
 
 interface ServerToClientEvents {
-  srv_distribute_connections: (connectedPlayers: Player[]) => void;
+  svr_distribute_connections: (connectedPlayers: Player[]) => void;
   svr_active_players_count: (playerCount: number) => void;
+  svr_player_user: (playerUser: PlayerUser) => void;
 }
 
 interface ClientToServerEvents {
-  send_public_connection: (userData: {}) => void;
+  send_public_connection: (PlayerUser: {}) => void;
   send_friend_request: (object: JSON) => void;
   respond_friend_request: (choice: boolean) => void;
   send_message: (object: JSON) => void;
@@ -27,20 +28,20 @@ interface ClientToServerEvents {
 }
 
 const url = 'https://maddison-unupbraided-abram.ngrok-free.dev'
-let user: UserData;
+let user: PlayerUser;
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   io(url, {
     transports: ['websocket'],
     autoConnect: false
   });  
 
-  socket.on('srv_distribute_connections', (connectedPlayers) => {
+  socket.on('svr_distribute_connections', (connectedPlayers) => {
     Players.connectedPlayers = connectedPlayers;
-    Players.connectedPlayers.forEach((p) => console.log(p))
+    console.log("PLAYERS:", Players.connectedPlayers);
   });
 
   socket.on('connect', () => {
-    user = new UserData();
+    user = new PlayerUser(socket.id!);
     user.status = "Online";
     socket.emit('send_public_connection', user.SendPublicInfo());
   });

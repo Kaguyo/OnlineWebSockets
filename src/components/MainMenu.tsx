@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
 import './MainMenu.css'
 import Players from '../api/online/Players'
-import UserData from '../api/user/UserData';
+import PlayerUser from '../api/user/PlayerUser';
 
 
 interface MainMenuProps {
+  playerUser?: PlayerUser;
   playerCount?: number;
   onArcadeMode?: () => void;
   arcadeMode?: boolean;
@@ -35,21 +36,23 @@ const MainMenu: React.FC<MainMenuProps> = ({
   onFindRoom,       findingRoom,  onFriendList,    friendList,
   onPlayerVsPlayer, pvpMode,      onCoopMode,      coopMode,
   onPlayerVsCpu,    vsCpu,      onMyAccount,       myAccount,
-  playerCount
+  playerCount,      playerUser
 }) => {
-  
-  const playerDivs = Players.connectedPlayers && Players.connectedPlayers.length >= playerCount!
-  ? Array(playerCount).fill(0).map((_, index) => (
-    <div 
-      key={index}
-      className="apm-col"
-    >
-      <div id="nickname-row"><h3>{Players.connectedPlayers[index].nickname}</h3></div><div id="vr"/>
-      <div id="status-row"><h3>{Players.connectedPlayers[index].status}</h3></div><div id="vr"/>
-      <div id="level-row"><h3>{Players.connectedPlayers[index].level}</h3></div><div id="vr"/>
-      <div id="actions-row"></div>
+  const playerDivs = Players.connectedPlayers
+  ?.filter(p => p.socketId !== playerUser!.socketId)
+  .slice(0, playerCount! - 1)  // if you still want to limit by playerCount
+  .map((player, index) => (
+    <div key={index} className="apm-col">
+      <div id="nickname-row"><h3>{player.nickname}</h3></div><div id="vr"/>
+      <div id="status-row"><h3>{player.status}</h3></div><div id="vr"/>
+      <div id="level-row"><h3>{player.level}</h3></div><div id="vr"/>
+      <div id="actions-row">
+         <button>add</button>
+         <button>chat</button>
+         <button>invite</button>
+      </div>
     </div>
-  )): null;
+  ));
 
   let component = !onlineSection ? 
     <div className="main-menu">

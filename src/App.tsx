@@ -5,24 +5,34 @@ import MainMenu from './components/MainMenu';
 import CombatArena from './components/CombatArena';
 import GameOverScreen from './components/GameOverScreen';
 import { socket } from './api/Socket';
+import type PlayerUser from './api/user/PlayerUser';
 
 
 type GamePhase = 'LOADING' | 'FRIEND_LIST' | 'FINDING_PLAYERS' | 'MAIN_MENU' | 'COMBAT' | 'GAME_OVER' | 'ONLINE_OPTIONS';
 const App: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState<GamePhase>('LOADING');
-  
   const [activePlayerCount, setActivePlayerCount] = useState<number>(0);
-  
+  const [playerUser, setPlayerUser] = useState<PlayerUser>();
   // useEffect(() => {
-  //   const handleUserDataUpdate = (userData: { nickname: string, status: string, level: number}) => {
+  //   const handlePlayerUserUpdate = (PlayerUser: { nickname: string, status: string, level: number}) => {
 
   //   };
   // });
-  
+  useEffect(() => {
+    const handleUserTransfer = (user: PlayerUser) => {
+      setPlayerUser(user);
+    };
+    socket.on('svr_player_user', handleUserTransfer); 
+
+    return () => {
+      socket.off('svr_player_user', handleUserTransfer);
+    };
+    
+  }, []);
+
   useEffect(() => {
     const handlePlayerUpdate = (count: number) => {
       setActivePlayerCount(count); 
-      console.log(count);
     };
     socket.on('svr_active_players_count', handlePlayerUpdate); 
 
@@ -47,7 +57,8 @@ const App: React.FC = () => {
         
       case 'MAIN_MENU':
         return (
-          <MainMenu 
+          <MainMenu
+            playerUser={playerUser}
             onArcadeMode={() => setCurrentPhase('COMBAT')}
             onConnectOnline={() => {setCurrentPhase('ONLINE_OPTIONS'), socket.connect()}}
           />
@@ -56,6 +67,7 @@ const App: React.FC = () => {
       case 'ONLINE_OPTIONS':
         return (
           <MainMenu 
+            playerUser={playerUser}
             onlineSection={true}
             onFindPlayers={() => setCurrentPhase('FINDING_PLAYERS')}
             onFindRoom={() => setCurrentPhase('FINDING_PLAYERS')}
@@ -65,7 +77,8 @@ const App: React.FC = () => {
 
       case 'FINDING_PLAYERS':
         return (
-          <MainMenu 
+          <MainMenu
+            playerUser={playerUser}
             onlineSection={true}
             findingPlayers={true}
             playerCount={activePlayerCount}
@@ -75,6 +88,7 @@ const App: React.FC = () => {
       case 'FRIEND_LIST':
         return (
           <MainMenu
+            playerUser={playerUser}
             onlineSection={true}
             friendList={true}
           />

@@ -20,7 +20,8 @@ class Player {
 
 class ServerToClientEvents {
   static svr_active_players_count="svr_active_players_count";
-  static srv_distribute_connections="srv_distribute_connections";
+  static svr_distribute_connections="svr_distribute_connections";
+  static svr_player_user="svr_player_user";
 }
 
 class ClientToServerEvents {
@@ -45,11 +46,12 @@ const io = new Server(server, {
 let connectedPlayers = [];
 
 io.on('connection', (socket) => {
-  socket.on(ClientToServerEvents.send_public_connection, (userData) => {
-    const player = new Player(userData.id, socket.id, userData.nickname, userData.level, userData.status);
-    connectedPlayers.push(player);
+  socket.on(ClientToServerEvents.send_public_connection, (player) => {
+    const p = new Player(player.id, socket.id, player.nickname, player.level, player.status);
+    connectedPlayers.push(p);
 
-    io.emit(ServerToClientEvents.srv_distribute_connections, connectedPlayers);
+    io.emit(ServerToClientEvents.svr_player_user, p)
+    io.emit(ServerToClientEvents.svr_distribute_connections, connectedPlayers);
     io.emit(ServerToClientEvents.svr_active_players_count, connectedPlayers.length);
   });
 
