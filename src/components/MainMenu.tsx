@@ -42,7 +42,6 @@ const MainMenu: React.FC<MainMenuProps> = ({
 }) => {
   const playerDivs = Players.connectedPlayers
   ?.filter(p => p.socketId !== playerUser!.socketId)
-  .slice(0, playerCount! - 1)  // if you still want to limit by playerCount
   .map((player, index) => (
     <div key={index} className="apm-col">
       <div id="nickname-row"><h3>{player.nickname}</h3></div><div id="vr"/>
