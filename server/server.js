@@ -49,7 +49,6 @@ io.on('connection', (socket) => {
       if (player.socketId == socket.id){
         connectedPlayers.splice(index, 1);
       }
-
     });
     
     io.emit(ServerToClientEvents.svr_distribute_connections, connectedPlayers);
@@ -63,7 +62,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on(ClientToServerEvents.invite_to_room, (json) => {
-    console.log("Invite to room data received:", json);
+    console.log(json.requester.nickname + " is inviting " + json.target.nickname + " to a room.");
     connectedPlayers.forEach((player) => {
       if (player.socketId == json.target.socketId){
         io.to(player.socketId).emit(ServerToClientEvents.svr_room_invite);
