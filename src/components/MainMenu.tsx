@@ -28,6 +28,8 @@ interface MainMenuProps {
   friendList?: boolean;
   onFindPlayers?: () => void;
   findingPlayers?: boolean;
+  inviteTarget?: Players;
+  catchTarget: (inviteTarget: Players) => void;
 }
 
 const MainMenu: React.FC<MainMenuProps> = ({   
@@ -35,8 +37,8 @@ const MainMenu: React.FC<MainMenuProps> = ({
   onCreateRoom,     createRoom,   onFindPlayers,   findingPlayers,
   onFindRoom,       findingRoom,  onFriendList,    friendList,
   onPlayerVsPlayer, pvpMode,      onCoopMode,      coopMode,
-  onPlayerVsCpu,    vsCpu,      onMyAccount,       myAccount,
-  playerCount,      playerUser
+  onPlayerVsCpu,    vsCpu,        onMyAccount,     myAccount,
+  playerCount,      playerUser,   inviteTarget,    catchTarget,
 }) => {
   const playerDivs = Players.connectedPlayers
   ?.filter(p => p.socketId !== playerUser!.socketId)
@@ -47,9 +49,11 @@ const MainMenu: React.FC<MainMenuProps> = ({
       <div id="status-row"><h3>{player.status}</h3></div><div id="vr"/>
       <div id="level-row"><h3>{player.level}</h3></div><div id="vr"/>
       <div id="actions-row">
-         <button>add</button>
-         <button>chat</button>
-         <button>invite</button>
+         <button>Add</button>
+         <button>Chat</button>
+         <button onClick={() => {
+            catchTarget(player);
+         }}>Invite</button>
       </div>
     </div>
   ));

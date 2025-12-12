@@ -6,6 +6,7 @@ import CombatArena from './components/CombatArena';
 import GameOverScreen from './components/GameOverScreen';
 import { socket } from './api/Socket';
 import type PlayerUser from './api/user/PlayerUser';
+import type Players from './api/online/Players';
 
 
 type GamePhase = 'LOADING' | 'FRIEND_LIST' | 'FINDING_PLAYERS' | 'MAIN_MENU' | 'COMBAT' | 'GAME_OVER' | 'ONLINE_OPTIONS';
@@ -13,11 +14,20 @@ const App: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState<GamePhase>('LOADING');
   const [activePlayerCount, setActivePlayerCount] = useState<number>(0);
   const [playerUser, setPlayerUser] = useState<PlayerUser>();
+  const [inviteTarget, setInviteTarget] = useState<Players>();
   // useEffect(() => {
   //   const handlePlayerUserUpdate = (PlayerUser: { nickname: string, status: string, level: number}) => {
 
   //   };
   // });
+  function catchTarget(target: Players){
+    setInviteTarget(target);
+    socket.emit('create_room', playerUser!.id);
+    socket.on('svr_new_room', () => {
+      socket.emit('invite_to_room', {requester: playerUser, target: target});
+    });
+  }
+
   useEffect(() => {
     const handleUserTransfer = (user: PlayerUser) => {
       setPlayerUser(user);
@@ -61,6 +71,7 @@ const App: React.FC = () => {
             playerUser={playerUser}
             onArcadeMode={() => setCurrentPhase('COMBAT')}
             onConnectOnline={() => {setCurrentPhase('ONLINE_OPTIONS'), socket.connect()}}
+            catchTarget={catchTarget}
           />
         );
 
@@ -72,6 +83,7 @@ const App: React.FC = () => {
             onFindPlayers={() => setCurrentPhase('FINDING_PLAYERS')}
             onFindRoom={() => setCurrentPhase('FINDING_PLAYERS')}
             onFriendList={() => setCurrentPhase('FRIEND_LIST')}
+            catchTarget={catchTarget}
           />
         );
 
@@ -82,6 +94,7 @@ const App: React.FC = () => {
             onlineSection={true}
             findingPlayers={true}
             playerCount={activePlayerCount}
+            catchTarget={catchTarget}
           />
         );
       
@@ -91,6 +104,7 @@ const App: React.FC = () => {
             playerUser={playerUser}
             onlineSection={true}
             friendList={true}
+            catchTarget={catchTarget}
           />
         )
       case 'COMBAT':
